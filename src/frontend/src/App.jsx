@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {use, useEffect, useState} from 'react';
 import './App.css';
 import StudentApi from "./services/StudentApi.js";
 import {
@@ -13,7 +13,7 @@ import {
     Layout,
     Menu,
     theme,
-    Table
+    Table, Spin, Empty
 } from 'antd';
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -61,9 +61,12 @@ const columns = [
     },
 ];
 
+
+
 function App() {
     const [students, setStudents] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
+    const [fetching, setFetching] = useState(true);
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
@@ -74,6 +77,7 @@ function App() {
                 const response = await StudentApi.getAllStudents();
                 setStudents(response.data);
                 console.log(response.data);
+                setFetching(false)
             } catch (error) {
                 console.error("Error fetching students:", error);
             }
@@ -83,8 +87,11 @@ function App() {
     }, []);
 
     const renderStudents = () => {
+        if(fetching) {
+            return <Spin/>
+        }
         if (students.length <= 0) {
-            return "no data available";
+            return <Empty/>;
         } else {
             return <Table
                 dataSource={students}
@@ -95,6 +102,7 @@ function App() {
                     pageSize: 50,
                 }}
                 scroll={{y: 55 * 5}}
+                rowKey={(student) => student.id}
             />;
         }
     }
@@ -147,7 +155,7 @@ function App() {
                         textAlign: 'center',
                     }}
                 >
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                    By Oleksii Garnadko
                 </Footer>
             </Layout>
         </Layout>
