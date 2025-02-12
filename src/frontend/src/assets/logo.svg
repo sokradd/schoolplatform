@@ -1,0 +1,31 @@
+<svg
+        width="200"
+        height="200"
+        viewBox="0 0 200 200"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        stroke="black"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+>
+    <!-- Shield with Gradient -->
+    <defs>
+        <linearGradient id="shieldGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2c3e50"/>
+            <stop offset="100%" stop-color="#1a252f"/>
+        </linearGradient>
+    </defs>
+    <path d="M100 20 L40 60 V110 C40 150 100 180 100 180 C100 180 160 150 160 110 V60 Z" fill="url(#shieldGradient)" stroke="#34495e"/>
+
+    <!-- Ribbon with Shadows -->
+    <path d="M50 120 L30 140 L70 150 L100 135 L130 150 L170 140 L150 120" fill="#e74c3c" stroke="#c0392b"/>
+    <path d="M50 122 L30 142 L70 152 L100 137 L130 152 L170 142 L150 122" fill="rgba(0,0,0,0.2)"/>
+
+    <!-- Book with Pages -->
+    <rect x="70" y="70" width="60" height="40" fill="white" stroke="#34495e"/>
+    <line x1="100" y1="70" x2="100" y2="110" stroke="#34495e"/>
+    <line x1="75" y1="70" x2="75" y2="110" stroke="#bdc3c7"/>
+    <line x1="125" y1="70" x2="125" y2="110" stroke="#bdc3c7"/>
+
+</svg>
