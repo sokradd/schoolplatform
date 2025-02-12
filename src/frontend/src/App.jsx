@@ -91,7 +91,7 @@ function App() {
                 columns={columns}
                 bordered
                 title={() => 'Students'}
-            />;
+            />;//
         }
     }
 
