@@ -1,5 +1,6 @@
 package com.schoolplatform.app.student;
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,24 +9,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/students")
+@AllArgsConstructor
 public class StudentController {
+
+    private final StudentService studentService;
 
     @GetMapping
     public List<Student> getAllStudents() {
-        List<Student> students = List.of(
-                new Student(
-                        1L,
-                        "Oleksii",
-                        "oleksii@gmail.com",
-                        Gender.MALE
-                ),
-                new Student(
-                        2L,
-                        "Nastya",
-                        "nastya@gmail.com",
-                        Gender.FEMALE
-                )
-        );
-        return students;
+        return studentService.getAllStudents();
     }
 }
