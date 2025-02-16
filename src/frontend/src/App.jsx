@@ -43,13 +43,13 @@ const items = [
 const TheAvatar = ({name}) => {
     let trim = name.trim()
     if (trim.length === 0) {
-        return <Avatar icon={UserOutlined}/>
+        return <Avatar icon={<UserOutlined/>}/>
     } else {
         const split = trim.split(" ");
         if(split.length === 1) {
             return <Avatar>{name.charAt(0)}</Avatar>
         } else {
-            return <Avatar>`${name.charAt(0)}${name.charAt(name.length-1)}`</Avatar>
+            return <Avatar>{`${name.charAt(0)}${name.charAt(name.length - 1)}`}</Avatar>;
         }
     }
 
@@ -128,7 +128,7 @@ function App() {
                     title={() =>
                         <>
                             <Tag style={{marginLeft: "10px "}}>Number of students:</Tag>
-                            <Badge count={students.length}
+                            <Badge count={students.length+2}
                                    showZero
                                    color="#999"
                                    style={{marginLeft: "2px"}}
