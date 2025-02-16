@@ -3,7 +3,7 @@ import StudentDrawerForm from "./functionality/StudentDrawerForm.jsx";
 import './App.css';
 import StudentApi from "./services/StudentApi.js";
 import {
-    DesktopOutlined, DownloadOutlined,
+    DesktopOutlined,
     FileOutlined,
     PieChartOutlined, PlusOutlined,
     TeamOutlined,
@@ -14,7 +14,7 @@ import {
     Layout,
     Menu,
     theme,
-    Table, Spin, Empty, Button
+    Table, Spin, Empty, Button, Badge, Tag, Avatar
 } from 'antd';
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -39,7 +39,30 @@ const items = [
     getItem('Team', 'sub2', <TeamOutlined/>, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined/>),
 ];
+
+const TheAvatar = ({name}) => {
+    let trim = name.trim()
+    if (trim.length === 0) {
+        return <Avatar icon={UserOutlined}/>
+    } else {
+        const split = trim.split(" ");
+        if(split.length === 1) {
+            return <Avatar>{name.charAt(0)}</Avatar>
+        } else {
+            return <Avatar>`${name.charAt(0)}${name.charAt(name.length-1)}`</Avatar>
+        }
+    }
+
+}
+
 const columns = [
+    {
+        title:'',
+        dataIndex: 'avatar',
+        key: 'avatar',
+        render: (text, student) =>
+            <TheAvatar name={student.name}/>
+    },
     {
         title: 'Id',
         dataIndex: 'id',
@@ -102,11 +125,22 @@ function App() {
                     dataSource={students}
                     columns={columns}
                     bordered
-                    title={() => <Button
-                        onClick={() => setShowDrawer(!showDrawer)}
-                        type="primary" shape="round" icon={<PlusOutlined/>} size={'small'}>
-                        Add new student
-                    </Button>}
+                    title={() =>
+                        <>
+                            <Tag style={{marginLeft: "10px "}}>Number of students:</Tag>
+                            <Badge count={students.length}
+                                   showZero
+                                   color="#999"
+                                   style={{marginLeft: "2px"}}
+                            />
+                            <br/><br/>
+                            <Button
+                                onClick={() => setShowDrawer(!showDrawer)}
+                                type="primary" shape="round" icon={<PlusOutlined/>} size={'small'}>
+                                Add new student
+                            </Button>
+                        </>
+                    }
                     pagination={{pageSize: 50}}
                     scroll={{y: 380}}
                     rowKey={(student) => student.id}
