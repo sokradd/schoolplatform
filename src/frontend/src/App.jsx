@@ -1,12 +1,12 @@
-import {use, useEffect, useState} from 'react';
+import { useEffect, useState} from 'react';
 import StudentDrawerForm from "./functionality/StudentDrawerForm.jsx";
 import './App.css';
 import StudentApi from "./services/StudentApi.js";
 import {
+    BankOutlined,
     DesktopOutlined,
     FileOutlined,
-    PieChartOutlined, PlusOutlined,
-    TeamOutlined,
+    PieChartOutlined, PlusOutlined, QuestionCircleOutlined, TableOutlined,
     UserOutlined,
 } from '@ant-design/icons';
 import {
@@ -14,7 +14,7 @@ import {
     Layout,
     Menu,
     theme,
-    Table, Spin, Empty, Button, Badge, Tag, Avatar
+    Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm
 } from 'antd';
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -29,15 +29,13 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-    getItem('Option 1', '1', <PieChartOutlined/>),
-    getItem('Option 2', '2', <DesktopOutlined/>),
-    getItem('User', 'sub1', <UserOutlined/>, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
+    getItem('Main page', '1', <BankOutlined/>),
+    getItem('Exercises', '2', <DesktopOutlined/>),
+    getItem('Data', 'sub1', <PieChartOutlined/>, [
+        getItem('Schedule', '3', <TableOutlined />),
+        getItem('Students', '4', <UserOutlined />),
     ]),
-    getItem('Team', 'sub2', <TeamOutlined/>, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-    getItem('Files', '9', <FileOutlined/>),
+    getItem('Materials', '5', <FileOutlined/>),
 ];
 
 const TheAvatar = ({name}) => {
@@ -55,42 +53,14 @@ const TheAvatar = ({name}) => {
 
 }
 
-const columns = [
-    {
-        title:'',
-        dataIndex: 'avatar',
-        key: 'avatar',
-        render: (text, student) =>
-            <TheAvatar name={student.name}/>
-    },
-    {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-    },
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        key: 'email',
-    },
-    {
-        title: 'Gender',
-        dataIndex: 'gender',
-        key: 'gender',
-    },
-];
-
 
 function App() {
-    const [students, setStudents] = useState([]);
+    const [students, setStudents] = useState();
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
+    const [removeStudent, setRemoveStudent] = useState([]);
+
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
@@ -108,6 +78,82 @@ function App() {
 
         fetchStudents();
     }, []);
+
+    // useEffect(() => {
+    //     async function deleteStudents() {
+    //         try {
+    //             const response = await StudentApi.deleteStudent();
+    //             setRemoveStudent(response.data);
+    //         } catch (error) {
+    //             console.error("Error deleting student:", error);
+    //         }
+    //     }
+    //
+    //     deleteStudents();
+    // }, []);
+    const deleteStudent = async (id) => {
+        if (!id) {
+            console.error("Error: Student ID is undefined");
+            return;
+        }
+        try {
+            await StudentApi.deleteStudent(id);
+            setStudents((prevStudents) => prevStudents.filter(student => student.id !== id));
+        } catch (error) {
+            console.error("Error deleting student:", error);
+        }
+    };
+
+    const columns = [
+        {
+            title:'',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (text, student) =>
+                <TheAvatar name={student.name}/>
+        },
+        {
+            title: 'Id',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
+        {
+            title: 'Gender',
+            dataIndex: 'gender',
+            key: 'gender',
+        },
+        {
+            title:'Actions',
+            dataIndex: 'actions',
+            key:'actions',
+            render: (text, student) => (
+                <Popconfirm
+                    title="Delete the student?"
+                    description={`Are you sure to delete ${student.name}?`}
+                    onConfirm={() => {
+                        if (student.id) {
+                            deleteStudent(student.id);
+                        } else {
+                            console.error("Error: Student ID is undefined");
+                        }
+                    }}
+                    icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                >
+                    <Button danger>Delete</Button>
+                </Popconfirm>
+            )
+        }
+    ];
 
     const renderStudents = () => {
         if (fetching) {
@@ -176,8 +222,8 @@ function App() {
                             margin: '16px 0',
                         }}
                         items={[
-                            {title: 'User'},
-                            {title: 'Bill'},
+                            {title: 'Data'},
+                            {title: 'Students'},
                         ]}
                     />
 
