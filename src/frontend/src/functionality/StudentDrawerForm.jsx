@@ -1,11 +1,23 @@
 import { Drawer, Input, Col, Select, Form, Row, Button } from 'antd';
+import {useState} from "react";
+import StudentApi from "../services/StudentApi.js";
 
 const { Option } = Select;
 
 function StudentDrawerForm({ showDrawer, setShowDrawer }) {
+    const [newStudents, setNewStudents] = useState([]);
+
     const onClose = () => setShowDrawer(false);
-    const onFinish = values => {
-        alert(JSON.stringify(values, null, 2));
+    const onFinish = async (student) => {
+        console.log(JSON.stringify(student, null, 2));
+
+        try {
+            const response = await StudentApi.addStudent(student);
+            setNewStudents(prevStudents => [...prevStudents, response.data]);
+            console.log("Added student:", response.data);
+        } catch (error) {
+            console.error("Error adding student:", error);
+        }
     };
 
     const onFinishFailed = errorInfo => {
@@ -17,8 +29,8 @@ function StudentDrawerForm({ showDrawer, setShowDrawer }) {
             title="Create new student"
             width={720}
             onClose={onClose}
-            open={showDrawer} // Changed from 'visible' to 'open'
-            bodyStyle={{ paddingBottom: 80 }}
+            open={showDrawer}
+            styles={{ body: { paddingBottom: 80 } }}
             footer={
                 <div style={{ textAlign: 'right' }}>
                     <Button onClick={onClose} style={{ marginRight: 8 }}>Cancel</Button>
@@ -29,7 +41,7 @@ function StudentDrawerForm({ showDrawer, setShowDrawer }) {
                 layout="vertical"
                 onFinishFailed={onFinishFailed}
                 onFinish={onFinish}
-                requiredMark={false} // Changed from 'hideRequiredMark'
+                requiredMark={false}
             >
                 <Row gutter={16}>
                     <Col span={12}>
