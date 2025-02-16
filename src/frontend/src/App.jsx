@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import StudentDrawerForm from "./functionality/StudentDrawerForm.jsx";
 import './App.css';
 import StudentApi from "./services/StudentApi.js";
@@ -32,26 +32,26 @@ const items = [
     getItem('Main page', '1', <BankOutlined/>),
     getItem('Exercises', '2', <DesktopOutlined/>),
     getItem('Data', 'sub1', <PieChartOutlined/>, [
-        getItem('Schedule', '3', <TableOutlined />),
-        getItem('Students', '4', <UserOutlined />),
+        getItem('Schedule', '3', <TableOutlined/>),
+        getItem('Students', '4', <UserOutlined/>),
     ]),
     getItem('Materials', '5', <FileOutlined/>),
 ];
 
 const TheAvatar = ({name}) => {
-    let trim = name.trim()
-    if (trim.length === 0) {
-        return <Avatar icon={<UserOutlined/>}/>
-    } else {
-        const split = trim.split(" ");
-        if(split.length === 1) {
-            return <Avatar>{name.charAt(0)}</Avatar>
-        } else {
-            return <Avatar>{`${name.charAt(0)}${name.charAt(name.length - 1)}`}</Avatar>;
-        }
+    if (!name || typeof name !== 'string') {
+        return <Avatar icon={<UserOutlined/>}/>;
     }
 
-}
+    const trim = name.trim();
+    const split = trim.split(" ");
+
+    if (split.length === 1) {
+        return <Avatar>{name.charAt(0)}</Avatar>;
+    } else {
+        return <Avatar>{`${name.charAt(0)}${name.charAt(name.length - 1)}`}</Avatar>;
+    }
+};
 
 
 function App() {
@@ -79,18 +79,6 @@ function App() {
         fetchStudents();
     }, []);
 
-    // useEffect(() => {
-    //     async function deleteStudents() {
-    //         try {
-    //             const response = await StudentApi.deleteStudent();
-    //             setRemoveStudent(response.data);
-    //         } catch (error) {
-    //             console.error("Error deleting student:", error);
-    //         }
-    //     }
-    //
-    //     deleteStudents();
-    // }, []);
     const deleteStudent = async (id) => {
         if (!id) {
             console.error("Error: Student ID is undefined");
@@ -106,7 +94,7 @@ function App() {
 
     const columns = [
         {
-            title:'',
+            title: '',
             dataIndex: 'avatar',
             key: 'avatar',
             render: (text, student) =>
@@ -133,24 +121,27 @@ function App() {
             key: 'gender',
         },
         {
-            title:'Actions',
+            title: 'Actions',
             dataIndex: 'actions',
-            key:'actions',
+            key: 'actions',
             render: (text, student) => (
-                <Popconfirm
-                    title="Delete the student?"
-                    description={`Are you sure to delete ${student.name}?`}
-                    onConfirm={() => {
-                        if (student.id) {
-                            deleteStudent(student.id);
-                        } else {
-                            console.error("Error: Student ID is undefined");
-                        }
-                    }}
-                    icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                >
-                    <Button danger>Delete</Button>
-                </Popconfirm>
+                <>
+                    <Button style={{marginRight: '10px'}}>Edit</Button>
+                    <Popconfirm
+                        title="Delete the student"
+                        description={`Are you sure to delete ${student.name}?`}
+                        onConfirm={() => {
+                            if (student.id) {
+                                deleteStudent(student.id);
+                            } else {
+                                console.error("Error: Student ID is undefined");
+                            }
+                        }}
+                        icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
+                    >
+                        <Button danger>Delete</Button>
+                    </Popconfirm>
+                </>
             )
         }
     ];
@@ -174,7 +165,7 @@ function App() {
                     title={() =>
                         <>
                             <Tag style={{marginLeft: "10px "}}>Number of students:</Tag>
-                            <Badge count={students.length+2}
+                            <Badge count={students.length}
                                    showZero
                                    color="#999"
                                    style={{marginLeft: "2px"}}
@@ -189,7 +180,7 @@ function App() {
                     }
                     pagination={{pageSize: 50}}
                     scroll={{y: 380}}
-                    rowKey={(student) => student.id}
+                    rowKey={(student) => student.id || student.email || Math.random().toString(36)}
                 />;
             </>
         }

@@ -1,4 +1,4 @@
-import {Drawer, Input, Col, Select, Form, Row, Button, Spin } from 'antd';
+import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
 import {useState} from "react";
 import StudentApi from "../services/StudentApi.js";
 
@@ -6,8 +6,8 @@ import StudentApi from "../services/StudentApi.js";
 const {Option} = Select;
 
 function StudentDrawerForm({showDrawer, setShowDrawer}) {
-    const [newStudents, setNewStudents] = useState([]);
     const [submitting, setSubmitting] = useState(false);
+    const [allStudents, setAllStudents] = useState();
 
     const onClose = () => setShowDrawer(false);
 
@@ -16,9 +16,12 @@ function StudentDrawerForm({showDrawer, setShowDrawer}) {
         setSubmitting(true);
         try {
             const response = await StudentApi.addStudent(student);
-            setNewStudents(prevStudents => [...prevStudents, response.data]);
-            setSubmitting(false);
-            onClose();
+            if (response.status === 200) {
+                const successResponse = StudentApi.getAllStudents()
+                setAllStudents(successResponse);
+                setSubmitting(false);
+                onClose();
+            }
         } catch (error) {
             console.error("Error adding student:", error)
             setSubmitting(false);

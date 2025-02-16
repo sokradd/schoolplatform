@@ -11,5 +11,10 @@ export default {
     },
     deleteStudent(Id) {
         return api().delete(`api/v1/students/${Id}`);
-    }
+    },
+    updateStudent(id, studentData) {
+        return api().put(`/api/v1/students/${id}`, studentData, {
+            headers: { "Content-Type": "application/json" }
+        });
+    },
 };
