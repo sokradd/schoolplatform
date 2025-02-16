@@ -1,4 +1,4 @@
-import { Drawer, Input, Col, Select, Form, Row, Button } from 'antd';
+import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
 import {useState} from "react";
 import StudentApi from "../services/StudentApi.js";
 
@@ -6,17 +6,19 @@ const { Option } = Select;
 
 function StudentDrawerForm({ showDrawer, setShowDrawer }) {
     const [newStudents, setNewStudents] = useState([]);
+    const [submitting, setSubmitting] = useState(false);
 
     const onClose = () => setShowDrawer(false);
     const onFinish = async (student) => {
         console.log(JSON.stringify(student, null, 2));
-
+        setSubmitting(true);
         try {
             const response = await StudentApi.addStudent(student);
             setNewStudents(prevStudents => [...prevStudents, response.data]);
-            console.log("Added student:", response.data);
+            setSubmitting(false);
         } catch (error) {
-            console.error("Error adding student:", error);
+            console.error("Error adding student:", error)
+            setSubmitting(false);
         }
     };
 
@@ -78,7 +80,7 @@ function StudentDrawerForm({ showDrawer, setShowDrawer }) {
                 <Row>
                     <Col span={12}>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">Submit</Button>
+                            <Button type="primary" htmlType="submit">Submit</Button> {submitting && <Spin/>}
                         </Form.Item>
                     </Col>
                 </Row>

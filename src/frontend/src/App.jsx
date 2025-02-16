@@ -77,7 +77,6 @@ function App() {
             try {
                 const response = await StudentApi.getAllStudents();
                 setStudents(response.data);
-                console.log(response.data);
                 setFetching(false)
             } catch (error) {
                 console.error("Error fetching students:", error);
