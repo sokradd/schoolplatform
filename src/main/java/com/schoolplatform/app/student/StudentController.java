@@ -1,10 +1,7 @@
 package com.schoolplatform.app.student;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
+    @PostMapping
     public void addStudent(@RequestBody Student student) {
         studentService.addStudent(student);
     }

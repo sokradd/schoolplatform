@@ -1,10 +1,11 @@
 import {use, useEffect, useState} from 'react';
+import StudentDrawerForm from "./functionality/StudentDrawerForm.jsx";
 import './App.css';
 import StudentApi from "./services/StudentApi.js";
 import {
-    DesktopOutlined,
+    DesktopOutlined, DownloadOutlined,
     FileOutlined,
-    PieChartOutlined,
+    PieChartOutlined, PlusOutlined,
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
@@ -13,7 +14,7 @@ import {
     Layout,
     Menu,
     theme,
-    Table, Spin, Empty
+    Table, Spin, Empty, Button
 } from 'antd';
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -62,11 +63,11 @@ const columns = [
 ];
 
 
-
 function App() {
     const [students, setStudents] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [showDrawer, setShowDrawer] = useState(false);
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
@@ -87,21 +88,31 @@ function App() {
     }, []);
 
     const renderStudents = () => {
-        if(fetching) {
+        if (fetching) {
             return <Spin/>
         }
         if (students.length <= 0) {
             return <Empty/>;
         } else {
-            return <Table
-                dataSource={students}
-                columns={columns}
-                bordered
-                title={() => 'Students'}
-                pagination={{ pageSize: 50 }}
-                scroll={{y: 380 }}
-                rowKey={(student) => student.id}
-            />;
+            return <>
+                <StudentDrawerForm
+                    showDrawer={showDrawer}
+                    setShowDrawer={setShowDrawer}
+                />
+                <Table
+                    dataSource={students}
+                    columns={columns}
+                    bordered
+                    title={() => <Button
+                        onClick={() => setShowDrawer(!showDrawer)}
+                        type="primary" shape="round" icon={<PlusOutlined/>} size={'small'}>
+                        Add new student
+                    </Button>}
+                    pagination={{pageSize: 50}}
+                    scroll={{y: 380}}
+                    rowKey={(student) => student.id}
+                />;
+            </>
         }
     }
 
