@@ -1,6 +1,9 @@
 package com.schoolplatform.app.student;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @ToString
@@ -22,8 +25,11 @@ public class Student {
             generator = "student_sequence",
             strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
+    @Email
     private String email;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
