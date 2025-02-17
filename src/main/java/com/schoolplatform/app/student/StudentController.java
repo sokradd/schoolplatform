@@ -1,6 +1,7 @@
 package com.schoolplatform.app.student;
 
 import lombok.AllArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public void addStudent(@RequestBody Student student) {
+    public void addStudent(@RequestBody Student student) throws BadRequestException {
         studentService.addStudent(student);
     }
 

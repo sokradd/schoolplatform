@@ -14,8 +14,11 @@ import {
     Layout,
     Menu,
     theme,
-    Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm
+    Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm,
 } from 'antd';
+
+
+
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -182,7 +185,7 @@ function App() {
                     pagination={{pageSize: 50}}
                     scroll={{y: 380}}
                     rowKey={(student) => student.id || student.email || Math.random().toString(36)}
-                />;
+                />
             </>
         }
     }

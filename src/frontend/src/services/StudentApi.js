@@ -1,19 +1,9 @@
 import api from "./api.js";
 
-const checkStatus = response => {
-    if (response.ok) {
-        return response;
-    }
-    // convert non-2xx HTTP responses into errors:
-    const error = new Error(response.statusText);
-    error.response = response;
-    return Promise.reject(error);
-}
 
 export default {
     getAllStudents() {
         return api().get("/api/v1/students")
-            .then(checkStatus);
     },
     addStudent(student) {
         return api().post("api/v1/students", student, {
