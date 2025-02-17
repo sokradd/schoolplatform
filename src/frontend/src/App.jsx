@@ -162,6 +162,7 @@ function App() {
                     <StudentDrawerForm
                     showDrawer={showDrawer}
                     setShowDrawer={setShowDrawer}
+                    setStudents={setStudents}
                     />
                     <Empty />
                     <Button

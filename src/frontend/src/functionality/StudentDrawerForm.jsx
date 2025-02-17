@@ -14,14 +14,22 @@ function StudentDrawerForm({showDrawer, setShowDrawer, setStudents}) {
     const onFinish = async (student) => {
         console.log(JSON.stringify(student, null, 2));
         setSubmitting(true);
+
         try {
             const response = await StudentApi.addStudent(student);
+
             if (response.status === 200) {
                 const updatedStudents = await StudentApi.getAllStudents();
-                setStudents(updatedStudents.data);
+                if (setStudents) {
+                    setStudents(updatedStudents.data);
+                    messageApi.success(`Student ${student.name} was added!`);
+                } else {
+                    console.error("setStudents is not defined!");
+                }
+
                 setSubmitting(false);
                 onClose();
-                messageApi.success(`Student ${student.name} was added!`)
+                messageApi.success(`Student ${student.name} was added!`);
             }
         } catch (error) {
             console.error("Error adding student:", error);
@@ -29,6 +37,7 @@ function StudentDrawerForm({showDrawer, setShowDrawer, setStudents}) {
             setSubmitting(false);
         }
     };
+
 
 
     const onFinishFailed = errorInfo => {
