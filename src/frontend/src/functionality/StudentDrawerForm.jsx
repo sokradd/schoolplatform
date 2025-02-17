@@ -25,7 +25,7 @@ function StudentDrawerForm({showDrawer, setShowDrawer, setStudents}) {
             }
         } catch (error) {
             console.error("Error adding student:", error);
-            messageApi.success(`Student ${student.name} can't be added:`, error);
+            messageApi.error(`Student ${student.name} can't be added`);
             setSubmitting(false);
         }
     };

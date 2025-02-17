@@ -14,7 +14,7 @@ import {
     Layout,
     Menu,
     theme,
-    Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm,
+    Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm, message,
 } from 'antd';
 
 
@@ -62,6 +62,7 @@ function App() {
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
 
 
     const {
@@ -76,6 +77,7 @@ function App() {
                 setFetching(false)
             } catch (error) {
                 console.log(error.response);
+                messageApi.error(`There is was an issue. ${error}`);
             }
         }
 
@@ -191,6 +193,8 @@ function App() {
     }
 
     return (
+        <>
+        {contextHolder}
         <Layout
             style={{
                 minHeight: '100vh',
@@ -242,6 +246,7 @@ function App() {
                 </Footer>
             </Layout>
         </Layout>
+        </>
     );
 }
 
