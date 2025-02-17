@@ -14,7 +14,7 @@ import {
     Layout,
     Menu,
     theme,
-    Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm, message,
+    Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm, message, Select, Input, Modal,
 } from 'antd';
 
 
@@ -61,6 +61,8 @@ function App() {
     const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
+    const [editingStudent, setEditingStudent] = useState(null);
+    const [editModalVisible, setEditModalVisible] = useState(false);
 
 
     const {
@@ -97,6 +99,30 @@ function App() {
         }
     };
 
+    const openEditModal = (student) => {
+        setEditingStudent(student);
+        setEditModalVisible(true);
+    };
+
+    const handleEditSubmit = async () => {
+        await updateStudent(editingStudent.id, editingStudent);
+        setEditModalVisible(false);
+    };
+
+    const updateStudent = async (id, updatedStudent) => {
+        try {
+            await StudentApi.updateStudent(id, updatedStudent);
+            setStudents(prevStudents => prevStudents.map(student =>
+                student.id === id ? {...student, ...updatedStudent} : student
+            ));
+            messageApi.success("Student updated successfully!");
+        } catch (error) {
+            console.error("Error updating student:", error);
+            messageApi.error(`Error updating student. ${error}`);
+        }
+    };
+
+
     const columns = [
         {
             title: '',
@@ -131,7 +157,12 @@ function App() {
             key: 'actions',
             render: (text, student) => (
                 <>
-                    <Button style={{marginRight: '10px'}}>Edit</Button>
+                    <Button
+                        style={{marginRight: '10px'}}
+                        onClick={() => openEditModal(student)}
+                    >
+                        Edit
+                    </Button>
                     <Popconfirm
                         title="Delete the student"
                         description={`Are you sure to delete ${student.name}?`}
@@ -266,6 +297,31 @@ function App() {
                     </Footer>
                 </Layout>
             </Layout>
+            <Modal
+                title="Edit Student"
+                visible={editModalVisible}
+                onOk={handleEditSubmit}
+                onCancel={() => setEditModalVisible(false)}
+            >
+                <Input
+                    placeholder="Name"
+                    value={editingStudent?.name}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, name: e.target.value })}
+                />
+                <Input
+                    placeholder="Email"
+                    value={editingStudent?.email}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, email: e.target.value })}
+                />
+                <Select
+                    value={editingStudent?.gender}
+                    onChange={(value) => setEditingStudent({ ...editingStudent, gender: value })}
+                >
+                    <Option value="MALE">Male</Option>
+                    <Option value="FEMALE">Female</Option>
+                    <Option value="OTHER">Other</Option>
+                </Select>
+            </Modal>
         </>
     );
 }
