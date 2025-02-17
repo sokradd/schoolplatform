@@ -29,4 +29,11 @@ public class StudentController {
             @PathVariable("Id") Long studentId) {
      studentService.deleteStudent(studentId);
     }
+    @PutMapping(path = "{id}")
+    public void updateStudent(
+            @PathVariable("id") Long studentId,
+            @Valid @RequestBody Student updatedStudent) throws BadRequestException {
+        studentService.updateStudent(studentId, updatedStudent);
+    }
+
 }
