@@ -16,7 +16,6 @@ import {
     theme,
     Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm
 } from 'antd';
-import {errorNotification} from "./functionality/Notification.jsx";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -74,9 +73,6 @@ function App() {
                 setFetching(false)
             } catch (error) {
                 console.log(error.response);
-                error.response.json().then(res => {
-                    console.log(res);
-                });
             }
         }
 
