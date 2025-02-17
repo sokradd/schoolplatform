@@ -1,12 +1,13 @@
 package com.schoolplatform.app.student;
 
 
+import com.schoolplatform.app.student.exception.*;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @AllArgsConstructor
 @Service
@@ -21,7 +22,7 @@ public class StudentService {
     public void addStudent(Student student) throws BadRequestException {
         boolean existsEmail = studentRepository
                 .selectExistsEmail(student.getEmail());
-        if(existsEmail) {
+        if (existsEmail) {
             throw new BadRequestException("Email " + student.getEmail() + " taken");
         }
         studentRepository.save(student);
@@ -29,9 +30,8 @@ public class StudentService {
 
     public void deleteStudent(Long id) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
+                .orElseThrow(() -> new StudentNotFoundException("Student with id " + id + " does not exist"));
 
         studentRepository.delete(student);
     }
-
 }

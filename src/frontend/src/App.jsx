@@ -18,8 +18,6 @@ import {
 } from 'antd';
 
 
-
-
 const {Header, Content, Footer, Sider} = Layout;
 
 function getItem(label, key, icon, children) {
@@ -87,6 +85,7 @@ function App() {
     const deleteStudent = async (id) => {
         if (!id) {
             console.error("Error: Student ID is undefined");
+            messageApi.error("Error: Student ID is undefined.")
             return;
         }
         try {
@@ -94,6 +93,7 @@ function App() {
             setStudents((prevStudents) => prevStudents.filter(student => student.id !== id));
         } catch (error) {
             console.error("Error deleting student:", error);
+            messageApi.error(`Error deleting student. ${error}`);
         }
     };
 
@@ -140,6 +140,7 @@ function App() {
                                 deleteStudent(student.id);
                             } else {
                                 console.error("Error: Student ID is undefined");
+                                messageApi.error("Error: Student ID is undefined");
                             }
                         }}
                         icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
@@ -156,7 +157,25 @@ function App() {
             return <Spin/>
         }
         if (students.length <= 0) {
-            return <Empty/>;
+            return (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 20 }}>
+                    <StudentDrawerForm
+                    showDrawer={showDrawer}
+                    setShowDrawer={setShowDrawer}
+                    />
+                    <Empty />
+                    <Button
+                        onClick={() => setShowDrawer(!showDrawer)}
+                        type="primary"
+                        shape="round"
+                        icon={<PlusOutlined />}
+                        size="small"
+                        style={{ marginTop: 16 }}
+                    >
+                        Add new student
+                    </Button>
+                </div>
+            );
         } else {
             return <>
                 <StudentDrawerForm
@@ -194,58 +213,58 @@ function App() {
 
     return (
         <>
-        {contextHolder}
-        <Layout
-            style={{
-                minHeight: '100vh',
-            }}
-        >
-            <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                <div className="demo-logo-vertical"/>
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items}/>
-            </Sider>
-            <Layout>
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                />
-                <Content
-                    style={{
-                        margin: '0 16px',
-                    }}
-                >
-                    <Breadcrumb
+            {contextHolder}
+            <Layout
+                style={{
+                    minHeight: '100vh',
+                }}
+            >
+                <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+                    <div className="demo-logo-vertical"/>
+                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items}/>
+                </Sider>
+                <Layout>
+                    <Header
                         style={{
-                            margin: '16px 0',
-                        }}
-                        items={[
-                            {title: 'Data'},
-                            {title: 'Students'},
-                        ]}
-                    />
-
-                    <div
-                        style={{
-                            padding: 24,
-                            minHeight: 360,
+                            padding: 0,
                             background: colorBgContainer,
-                            borderRadius: borderRadiusLG,
+                        }}
+                    />
+                    <Content
+                        style={{
+                            margin: '0 16px',
                         }}
                     >
-                        {renderStudents()}
-                    </div>
-                </Content>
-                <Footer
-                    style={{
-                        textAlign: 'center',
-                    }}
-                >
-                    By Oleksii Garnadko
-                </Footer>
+                        <Breadcrumb
+                            style={{
+                                margin: '16px 0',
+                            }}
+                            items={[
+                                {title: 'Data'},
+                                {title: 'Students'},
+                            ]}
+                        />
+
+                        <div
+                            style={{
+                                padding: 24,
+                                minHeight: 360,
+                                background: colorBgContainer,
+                                borderRadius: borderRadiusLG,
+                            }}
+                        >
+                            {renderStudents()}
+                        </div>
+                    </Content>
+                    <Footer
+                        style={{
+                            textAlign: 'center',
+                        }}
+                    >
+                        By Oleksii Garnadko
+                    </Footer>
+                </Layout>
             </Layout>
-        </Layout>
         </>
     );
 }

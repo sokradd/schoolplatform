@@ -25,14 +25,14 @@ function StudentDrawerForm({showDrawer, setShowDrawer, setStudents}) {
             }
         } catch (error) {
             console.error("Error adding student:", error);
-            messageApi.error(`Student ${student.name} can't be added`);
+            messageApi.error(`Student ${student.name} can't be added. Email already taken`);
             setSubmitting(false);
         }
     };
 
 
     const onFinishFailed = errorInfo => {
-        alert(JSON.stringify(errorInfo, null, 2));
+        messageApi.error(`Bad request[400]. Error : ${errorInfo} `);
     };
 
     return (
