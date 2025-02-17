@@ -16,6 +16,7 @@ import {
     theme,
     Table, Spin, Empty, Button, Badge, Tag, Avatar, Popconfirm
 } from 'antd';
+import {errorNotification} from "./functionality/Notification.jsx";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -59,7 +60,7 @@ function App() {
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
-    const [removeStudent, setRemoveStudent] = useState([]);
+
 
     const {
         token: {colorBgContainer, borderRadiusLG},
@@ -72,7 +73,10 @@ function App() {
                 setStudents(response.data);
                 setFetching(false)
             } catch (error) {
-                console.error("Error fetching students:", error);
+                console.log(error.response);
+                error.response.json().then(res => {
+                    console.log(res);
+                });
             }
         }
 
@@ -157,6 +161,7 @@ function App() {
                 <StudentDrawerForm
                     showDrawer={showDrawer}
                     setShowDrawer={setShowDrawer}
+                    setStudents={setStudents}
                 />
                 <Table
                     dataSource={students}

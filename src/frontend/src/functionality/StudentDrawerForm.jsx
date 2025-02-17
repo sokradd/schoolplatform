@@ -5,9 +5,8 @@ import StudentApi from "../services/StudentApi.js";
 
 const {Option} = Select;
 
-function StudentDrawerForm({showDrawer, setShowDrawer}) {
+function StudentDrawerForm({showDrawer, setShowDrawer, setStudents}) {
     const [submitting, setSubmitting] = useState(false);
-    const [allStudents, setAllStudents] = useState();
 
     const onClose = () => setShowDrawer(false);
 
@@ -17,16 +16,17 @@ function StudentDrawerForm({showDrawer, setShowDrawer}) {
         try {
             const response = await StudentApi.addStudent(student);
             if (response.status === 200) {
-                const successResponse = StudentApi.getAllStudents()
-                setAllStudents(successResponse);
+                const updatedStudents = await StudentApi.getAllStudents();
+                setStudents(updatedStudents.data);
                 setSubmitting(false);
                 onClose();
             }
         } catch (error) {
-            console.error("Error adding student:", error)
+            console.error("Error adding student:", error);
             setSubmitting(false);
         }
     };
+
 
     const onFinishFailed = errorInfo => {
         alert(JSON.stringify(errorInfo, null, 2));

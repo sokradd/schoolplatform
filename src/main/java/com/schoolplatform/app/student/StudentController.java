@@ -14,7 +14,7 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+       return studentService.getAllStudents();
     }
 
     @PostMapping
