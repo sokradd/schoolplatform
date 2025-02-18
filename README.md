@@ -115,4 +115,5 @@ ___
 
 > #### *Delete Student*
 >
-> <img src="./assets/deletestudentpopconfirmat
+><img src="./assets/deletestudentpopconfirmation.png">
+
