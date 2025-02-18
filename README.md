@@ -39,9 +39,9 @@
 | Method   | Url                     | Passing Properties                                                                 | Description                                 | Example passing props                                                            |
 |----------|-------------------------|------------------------------------------------------------------------------------|---------------------------------------------|----------------------------------------------------------------------------------|
 | **GET**  | _`/api/v1/students`_    | -                                                                                  | Return a list of students                   | -                                                                                |
-| **POST** | _`/api/v1/students`_    | JSON { "name": STRING ,  "email": STRING, "gender": "GENDER.(MALE,FEMALE,OTHER)" } | Create a new student with passed properties | { "name": "Ozzy Osbourne", "email": "ozzy.osbourne@mail.com", "gender": "MALE" } |
+| **POST** | _`/api/v1/students`_    | JSON { "name": STRING ,  "email": STRING, "gender": "(MALE,FEMALE,OTHER)" } | Create a new student with passed properties | { "name": "Ozzy Osbourne", "email": "ozzy.osbourne@mail.com", "gender": "MALE" } |
 | **DEL**  | _`/api/v1/students/id`_ | -                                                                                  | Deleting a student                          | -                                                                                |
-| **PUT**  | _`/api/v1/students/id`_ | JSON { "name": STRING ,  "email": STRING, "gender": "GENDER.(MALE,FEMALE,OTHER)" } | Update an existing student                  | { "name": "Ryan Gosling", "email": "ryan.gosling@mail.com", "gender": "MALE" }   |
+| **PUT**  | _`/api/v1/students/id`_ | JSON { "name": STRING ,  "email": STRING, "gender": "(MALE,FEMALE,OTHER)" } | Update an existing student                  | { "name": "Ryan Gosling", "email": "ryan.gosling@mail.com", "gender": "MALE" }   |
 
 ## Handled Exceptions
 
