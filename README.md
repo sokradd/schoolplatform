@@ -97,3 +97,22 @@ ___
 > #### *StudentServiceTest*
 >
 > <img src="./assets/studentservicetest.png">
+
+## UI Example 
+
+> #### *Main Page*
+> 
+> <img src="./assets/uiexample1.png">
+
+> #### *Main Page + Student Drawer(Add New Student) + Notification*
+><img src="./assets/popnotificationaddingstudent.png">
+> <img src="./assets/uiexampleaddingstudent.png">
+
+
+> #### *Edit Student*
+>
+> <img src="./assets/uiexampleeditstudent.png">
+
+> #### *Delete Student*
+>
+> <img src="./assets/deletestudentpopconfirmation.png">
