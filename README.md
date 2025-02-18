@@ -1,11 +1,9 @@
 # School Platform 2025
 
-___
 <img src="./assets/header.png">
 
 # Student Management System API
 
-___
 
 ## Technology stack
 
@@ -19,25 +17,20 @@ ___
 
 ## Project Architecture
 
-___
 
 - For this project was used 3-Tier Architecture.
 - For student entity was created own Controller, Service, Repository(JPA)
 
 ## Student description
 
-___
 
 - A Student has an ID (id), full name (name), email (email) and gender (enum)
 
 ## Project Diagram
 
-___
 <img src="./assets/projectdiagram.png">
 
 ## API
-
-___
 
 ### Requests
 
@@ -51,8 +44,6 @@ ___
 | **PUT**  | _`/api/v1/students/id`_ | JSON { "name": STRING ,  "email": STRING, "gender": "GENDER.(MALE,FEMALE,OTHER)" } | Update an existing student                  | { "name": "Ryan Gosling", "email": "ryan.gosling@mail.com", "gender": "MALE" }   |
 
 ## Handled Exceptions
-
-___
 
 | **Exception**                                      | **Where It's Used**              | **Trigger Condition**                                  | **HTTP Status**     |
 |----------------------------------------------------|----------------------------------|--------------------------------------------------------|---------------------|
@@ -86,8 +77,6 @@ ___
 
 ## Testing
 
-___
-
 ### Test Structure
 
 - `StudentIT` – Integration tests for student-related functionality.
@@ -97,7 +86,6 @@ ___
 - `application-it.properties` – Configuration for integration tests.
 
 ### Example of testing
-___
 > #### *StudentIT*
 >
 > <img src="./assets/studentit.png">
